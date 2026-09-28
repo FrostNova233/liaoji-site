@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="料记：为水电、地热施工师傅打造的客户与材料管理工具。" />
+  <title>料记 · 把每一笔料算清楚</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="料记首页"><span class="brand-mark">料</span><span>料记</span></a>
+    <span class="header-note">水电师傅的随身算料本</span>
+    <a class="header-link" href="#features">功能一览 <span aria-hidden="true">↓</span></a>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> 为一线施工准备</p>
+        <h1>把每一笔料<br />算得<span>明明白白</span></h1>
+        <p class="hero-lead">料记，专为水电、地热施工师傅打造。客户、材料、合计和料单，都在一部手机里理顺。</p>
+        <div class="hero-points" aria-label="核心优势">
+          <div><b>01</b><span>记客户<br />不漏信息</span></div>
+          <div><b>02</b><span>算材料<br />随改随算</span></div>
+          <div><b>03</b><span>出料单<br />一键清晰</span></div>
+        </div>
+        <a class="primary-cta" href="#demo">看看怎么用 <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-device-wrap">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="sticker sticker-water">水<span>料</span></div>
+        <div class="sticker sticker-electric">电<span>料</span></div>
+        <div class="sticker sticker-floor">地<span>热</span></div>
+        <div class="phone phone-hero" aria-label="料记客户一览界面示例">
+          <div class="phone-top"><span>9:41</span><span>● ● ●</span></div>
+          <div class="app-head"><div><small>上午好，师傅</small><strong>我的料单</strong></div><button class="avatar" aria-label="个人资料">王</button></div>
+          <div class="search-static">⌕ <span>搜小区、姓名或电话</span></div>
+          <div class="mini-order"><span>最新更新</span><span>↕</span></div>
+          <div class="hero-record selected"><div class="record-top"><strong>悦湖雅苑 · 3-2-1802</strong><span class="chips"><i class="water">水</i><i class="electric">电</i><i class="floor">热</i></span></div><p>张师傅　138 8624 1908 <time>· 今天 10:26</time></p></div>
+          <div class="hero-record"><div class="record-top"><strong>锦绣新城 · 8-1-502</strong><span class="chips"><i class="electric">电</i></span></div><p>李女士　186 3201 8876 <time>· 昨天 18:40</time></p></div>
+          <button class="floating-plus" aria-label="新建料单">＋</button>
+          <div class="phone-tab"><span class="active">▣<b>料单</b></span><span>◉<b>材料</b></span><span>⚙<b>设置</b></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="demo-section">
+      <div class="section-intro section-shell">
+        <p class="eyebrow"><span></span> 跟着做一遍</p>
+        <div><h2>从接到电话到出料单，<br />几步就完成。</h2><p>点一点手机里的操作，体验料记怎样陪你把活儿理顺。</p></div>
+      </div>
+      <div class="demo-layout section-shell">
+        <aside class="flow-nav" aria-label="功能演示步骤">
+          <button class="flow-step active" data-screen="list"><b>01</b><span><strong>料单一览</strong><small>客户与进度一眼清楚</small></span></button>
+          <button class="flow-step" data-screen="category"><b>02</b><span><strong>选择要算的料</strong><small>水料、电料、地热</small></span></button>
+          <button class="flow-step" data-screen="materials"><b>03</b><span><strong>添加材料</strong><small>数量、单价自动合计</small></span></button>
+          <button class="flow-step" data-screen="customer"><b>04</b><span><strong>补全客户资料</strong><small>地址、联系人、备注</small></span></button>
+          <button class="flow-step" data-screen="complete"><b>05</b><span><strong>查看与导出</strong><small>明细、合计、PDF料单</small></span></button>
+        </aside>
+        <div class="demo-device-col">
+          <div class="phone demo-phone">
+            <div class="phone-top"><span>9:41</span><span>● ● ●</span></div>
+            <div id="app-screen" aria-live="polite"></div>
+          </div>
+          <p class="tap-tip">点击界面中的按钮继续演示 <span>↗</span></p>
+        </div>
+        <div class="demo-copy" id="demo-copy">
+          <p class="step-count">STEP 01 / 05</p><h3>接过电话，<br />先记下这位客户。</h3><p>小区、房间号、联系人和电话，和这张料单放在一起。过去的活儿也能随时搜索出来。</p>
+          <div class="note-card"><span>⌕</span><div><strong>按关键词搜索</strong><small>小区 / 姓名 / 联系电话都能查</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features section-shell">
+      <div class="feature-heading"><p class="eyebrow"><span></span> 一目了然的功能</p><h2>该记的、该算的、<br />该交代的，都有地方放。</h2></div>
+      <div class="feature-grid">
+        <article class="feature-card feature-large"><div class="feature-icon blue">▣</div><p class="feature-num">01 / 客户与料单</p><h3>每个活儿，都找得到。</h3><p>客户可保留多张料单。地址精确到房间，创建和最终更新时间清楚可查。</p><div class="feature-tags"><span>小区地址</span><span>联系人</span><span>联系电话</span><span>历史料单</span></div></article>
+        <article class="feature-card dark"><div class="feature-icon orange">±</div><p class="feature-num">02 / 材料计算</p><h3>水、电、地热，<br />分开算更安心。</h3><p>材料可随时增减、修改种类、单位和单价；数量与小计自动跟着变。</p><div class="category-row"><i class="water">水料</i><i class="electric">电料</i><i class="floor">地热</i></div></article>
+        <article class="feature-card"><div class="feature-icon green">⌖</div><p class="feature-num">03 / 客户信息</p><h3>该留的话，一句不漏。</h3><p>位置、联系人、电话、备注集中保存。点电话可唤起手机拨号并自动带入号码。</p></article>
+        <article class="feature-card"><div class="feature-icon orange">⌗</div><p class="feature-num">04 / 效率工具</p><h3>手边常用的，随手能到。</h3><p>按时间或信息排序；需要手算时，一键跳到系统计算器。</p></article>
+        <article class="feature-card export-card"><div class="export-art"><span>PDF</span><b>↓</b></div><div><p class="feature-num">05 / 导出交付</p><h3>一张清楚的料单，直接发人。</h3><p>导出含客户抬头、分类明细、数量、单价、小计和总计的 PDF。</p></div></article>
+      </div>
+    </section>
+
+    <section class="closing section-shell"><p class="eyebrow"><span></span> 料记的工作方式</p><h2>少翻几页本子，<br />多留一点心思在活儿上。</h2><div class="closing-line"><span>接活</span><i></i><span>算料</span><i></i><span>确认</span><i></i><span>出单</span></div></section>
+  </main>
+  <footer><a class="brand" href="#top"><span class="brand-mark">料</span><span>料记</span></a><span>把每一笔料，记得明明白白。</span><span>© 2026 料记</span></footer>
+  <script src="app.js"></script>
+</body>
+</html>
