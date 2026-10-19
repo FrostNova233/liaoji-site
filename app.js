@@ -1,33 +1,227 @@
-const state = { screen: 'list', selectedTypes: new Set(['water', 'electric', 'floor']), materialTab: 'water', quantities: { pipe: 20, wire: 3, cable: 2, valve: 4 }, sortAsc: false, editingId: null };
-const copy = {
-  list: ['STEP 01 / 05', '接过电话，<br>先记下这位客户。', '小区、房间号、联系人和电话，和这张料单放在一起。过去的活儿也能随时搜索出来。', '⌕', '按关键词搜索', '小区 / 姓名 / 联系电话都能查'],
-  category: ['STEP 02 / 05', '这次的活儿，<br>要算哪些料？', '新建料单时，先勾选水料、电料和地热。后续每类材料独立整理，清爽不混乱。', '◌', '三类分开管理', '水料、电料、地热一目了然'],
-  materials: ['STEP 03 / 05', '数量一改，<br>总价立刻跟着变。', '材料能新增、删减，也能编辑名称、单位和单价；不用再掏计算器反复按。', '±', '材料明细可编辑', '数量、单价、小计实时合计'],
-  customer: ['STEP 04 / 05', '料算好了，<br>再补全客户信息。', '地址、联系人、电话和现场备注一次填好。点电话时会直接交给系统电话应用。', '⌕', '客户信息集中保存', '拨号时自动填入联系电话'],
-  complete: ['STEP 05 / 05', '一张清楚的料单，<br>交代得明明白白。', '材料下料、分类小计和总计清楚展示；需要时可编辑、用计算器，或导出 PDF。', '↓', '完整施工料单', '客户抬头、材料明细、总计一并导出']
-};
-const materials = { water: [{ id: 'pipe', name: 'PPR 冷水管 20', unit: '米', price: 4.8 }, { id: 'valve', name: '截止阀 20', unit: '个', price: 18 }], electric: [{ id: 'wire', name: 'BV 2.5 平方电线', unit: '卷', price: 185 }, { id: 'cable', name: '阻燃线管 20', unit: '根', price: 6.5 }], floor: [{ id: 'floorPipe', name: '地热管 16', unit: '米', price: 5.2 }] };
-function money(v) { return `¥${v.toFixed(2)}`; }
-function getTotal() { return Object.values(materials).flat().reduce((sum, item) => sum + (state.quantities[item.id] || 0) * item.price, 0); }
-function updateCopy(key) { const [step, title, body, icon, noteTitle, noteBody] = copy[key]; document.getElementById('demo-copy').innerHTML = `<p class="step-count">${step}</p><h3>${title}</h3><p>${body}</p><div class="note-card"><span>${icon}</span><div><strong>${noteTitle}</strong><small>${noteBody}</small></div></div>`; }
-function setScreen(key) { state.screen = key; document.querySelectorAll('.flow-step').forEach(b => b.classList.toggle('active', b.dataset.screen === key)); updateCopy(key); render(); }
-function typeTag(key) { return key === 'water' ? '<i class="water">水料</i>' : key === 'electric' ? '<i class="electric">电料</i>' : '<i class="floor">地热</i>'; }
-function listScreen() { return `<div class="screen-head"><strong>我的料单</strong><button class="right" onclick="setScreen('category')">新建 ＋</button></div><div class="screen-body"><input class="screen-search" id="search" placeholder="⌕  搜小区、姓名或电话" oninput="filterRecords()"><div class="screen-sort"><span>共 3 张料单</span><button class="sort-button" onclick="toggleSort()">${state.sortAsc ? '创建时间 ↑' : '最后更新 ↓'} ↕</button></div><div id="records">${recordCards()}</div></div><button class="new-sheet" onclick="setScreen('category')" aria-label="新建料单">＋</button>`; }
-function recordCards(filter = '') { let data = [{a:'悦湖雅苑 · 3-2-1802',n:'张师傅　138 8624 1908',t:'今天 10:26', types:['water','electric','floor']},{a:'锦绣新城 · 8-1-502',n:'李女士　186 3201 8876',t:'昨天 18:40',types:['electric']},{a:'春晖里 · 6-3-901',n:'王先生　159 7750 3241',t:'9月26日',types:['water','floor']}]; if(state.sortAsc) data=data.reverse(); return data.filter(x => `${x.a}${x.n}`.includes(filter)).map((x,i)=>`<div class="demo-list-record" onclick="${i===0 ? "setScreen('complete')" : "setScreen('category')"}"><div class="record-title-row"><h4>${x.a}</h4><span class="record-tags">${x.types.map(typeTag).join('')}</span></div><p>${x.n}<time> · ${x.t}</time></p></div>`).join('') || '<p class="screen-subtitle">没有找到相关料单</p>'; }
-function categoryScreen() { return `<div class="screen-head"><button class="back" onclick="setScreen('list')">‹</button><strong>新建算料单</strong></div><div class="screen-body"><h2 class="category-title">这次需要算什么料？</h2><p class="screen-subtitle">可以多选，之后还能修改。</p><div class="category-options">${[['water','水料','水路材料'],['electric','电料','电路材料'],['floor','地热','地暖材料']].map(([k,n,d])=>`<button class="category-option ${state.selectedTypes.has(k)?'selected':''}" onclick="toggleType('${k}')"><span>${typeTag(k)}</span><span>${n}<small class="screen-subtitle">　${d}</small></span><em>${state.selectedTypes.has(k)?'已选择':'＋'}</em></button>`).join('')}</div></div><button class="continue-button" onclick="setScreen('materials')">下一步，添加材料</button>`; }
-function materialsScreen() { const tab = state.materialTab; const rows = materials[tab].map(m => { const q = state.quantities[m.id] || 0; return `<div class="material-row"><div class="material-info"><button class="material-name" onclick="openEditor('${m.id}')">${m.name}</button><button class="edit-material" onclick="openEditor('${m.id}')">${money(m.price)}/${m.unit}　编辑 ›</button></div><div class="material-actions"><div class="quantity"><button onclick="changeQty('${m.id}',-1)">−</button><span>${q}</span><button onclick="changeQty('${m.id}',1)">＋</button></div><span class="subtotal">${money(q*m.price)}</span></div></div>`; }).join(''); return `<div class="screen-head"><button class="back" onclick="setScreen('category')">‹</button><strong>材料明细</strong></div><div class="material-tabs">${Array.from(state.selectedTypes).map(k=>`<button class="${tab===k?'active':''}" onclick="switchTab('${k}')">${k==='water'?'水料':k==='electric'?'电料':'地热'}</button>`).join('')}</div><div class="screen-body">${rows}<button class="add-material" onclick="addMaterial()">＋ 新增一项材料</button></div><div class="total-bar"><span><small>当前合计</small><b>${money(getTotal())}</b></span><span class="screen-subtitle">含 ${Object.values(state.quantities).filter(q=>q>0).length} 项材料</span></div><button class="save-materials" onclick="setScreen('customer')">保存，补充客户信息</button>${editorPanel()}`; }
-function customerScreen() { return `<div class="screen-head"><button class="back" onclick="setScreen('materials')">‹</button><strong>客户信息</strong></div><div class="screen-body"><label class="form-label">小区地址（精确到房间）</label><input class="form-input" value="悦湖雅苑 3号楼2单元1802"><label class="form-label">联系人</label><input class="form-input" value="张师傅"><label class="form-label">联系电话</label><input class="form-input phone-link" value="138 8624 1908"><p class="form-note">点击电话时，料记会唤起系统电话并自动带入号码</p><label class="form-label">现场备注</label><input class="form-input" value="厨房改水，卫生间做地热"></div><button class="continue-button" onclick="setScreen('complete')">保存料单</button>`; }
-function completeScreen() { const active = Object.values(materials).flat().filter(m => (state.quantities[m.id]||0)>0); return `<div class="screen-head"><button class="back" onclick="setScreen('list')">‹</button><strong>料单详情</strong><button class="right" onclick="setScreen('materials')">编辑</button></div><div class="complete-hero"><small>悦湖雅苑 · 3-2-1802</small><h4>张师傅　<span class="phone-link">138 8624 1908</span></h4><p>创建于今天 09:42　·　更新于 10:26</p></div><div class="screen-body"><p class="summary-title">下料明细</p>${active.slice(0,4).map(m=>`<div class="summary-row"><span>${m.name} × ${state.quantities[m.id]}</span><b>${money(m.price*(state.quantities[m.id]||0))}</b></div>`).join('')}<div class="summary-total"><span>材料合计</span><b>${money(getTotal())}</b></div></div><div class="complete-actions"><button onclick="alert('演示说明：实际 App 将跳转系统计算器。')">⌗ 计算器</button><button onclick="alert('演示说明：实际 App 将生成完整施工料单 PDF。')">↓ 导出 PDF</button></div>`; }
-function render() { const screen = document.getElementById('app-screen'); screen.innerHTML = ({list:listScreen,category:categoryScreen,materials:materialsScreen,customer:customerScreen,complete:completeScreen})[state.screen](); }
-function toggleType(key){state.selectedTypes.has(key)?state.selectedTypes.delete(key):state.selectedTypes.add(key);if(!state.selectedTypes.size)state.selectedTypes.add(key);if(!state.selectedTypes.has(state.materialTab))state.materialTab=Array.from(state.selectedTypes)[0];render();}
-function switchTab(key){state.materialTab=key;render();}
-function changeQty(id,d){state.quantities[id]=Math.max(0,(state.quantities[id]||0)+d);render();}
-function addMaterial(){const id=`custom${Date.now()}`;materials[state.materialTab].push({id,name:'新材料',unit:'个',price:0});state.quantities[id]=1;state.editingId=id;render();}
-function findMaterial(id){for(const [type,items] of Object.entries(materials)){const material=items.find(item=>item.id===id);if(material)return {type,material};}return null;}
-function openEditor(id){state.editingId=id;render();}
-function closeEditor(){state.editingId=null;render();}
-function editorPanel(){if(!state.editingId)return '';const found=findMaterial(state.editingId);if(!found)return '';const {type,material}=found;return `<div class="edit-overlay"><div class="edit-panel"><div class="edit-panel-head"><strong>编辑材料</strong><button onclick="closeEditor()">×</button></div><label>材料分类<select id="edit-type"><option value="water" ${type==='water'?'selected':''}>水料</option><option value="electric" ${type==='electric'?'selected':''}>电料</option><option value="floor" ${type==='floor'?'selected':''}>地热</option></select></label><label>材料名称<input id="edit-name" value="${material.name}"></label><div class="edit-split"><label>单位<input id="edit-unit" value="${material.unit}"></label><label>单价<input id="edit-price" type="number" min="0" step="0.1" value="${material.price}"></label></div><button class="edit-save" onclick="saveEditor('${material.id}')">保存修改</button></div></div>`;}
-function saveEditor(id){const found=findMaterial(id);if(!found)return;const nextType=document.getElementById('edit-type').value;const material=found.material;material.name=document.getElementById('edit-name').value.trim()||material.name;material.unit=document.getElementById('edit-unit').value.trim()||material.unit;material.price=Math.max(0,Number(document.getElementById('edit-price').value)||0);if(nextType!==found.type){materials[found.type]=materials[found.type].filter(item=>item.id!==id);materials[nextType].push(material);state.selectedTypes.add(nextType);state.materialTab=nextType;}state.editingId=null;render();}
-function filterRecords(){const el=document.getElementById('search');const records=document.getElementById('records');if(el&&records)records.innerHTML=recordCards(el.value.trim());}
-function toggleSort(){state.sortAsc=!state.sortAsc;render();}
-document.querySelectorAll('.flow-step').forEach(button=>button.addEventListener('click',()=>setScreen(button.dataset.screen)));render();
+'use strict';
+
+// The only download destination; every data-download link uses this value.
+const SITE_CONFIG = Object.freeze({ downloadUrl: 'https://www.pgyer.com/liaoji-android' });
+const CATEGORIES = Object.freeze({ water: '水料', electric: '电料', floor: '地热' });
+// A small, anonymous example based on the App's material vocabulary. Quantities
+// use integer thousandths, matching the App's precision without float drift.
+const MATERIALS = Object.freeze([
+  { id: 'pipe', category: 'water', name: '4分水管', spec: '上水料 · 根', unit: '根', initial: 6000 },
+  { id: 'elbow', category: 'water', name: '4分弯头', spec: '上水料 · 个', unit: '个', initial: 8000 },
+  { id: 'tee', category: 'water', name: '4分三通', spec: '上水料 · 个', unit: '个', initial: 4000 },
+  { id: 'valve', category: 'water', name: '截止阀', spec: '上水料 · 个', unit: '个', initial: 0 },
+  { id: 'wire', category: 'electric', name: '铜芯电线', spec: 'BV 2.5 平方 · 卷', unit: '卷', initial: 2000 },
+  { id: 'conduit', category: 'electric', name: '穿线管', spec: '20mm · 根', unit: '根', initial: 0 },
+  { id: 'box', category: 'electric', name: '接线盒', spec: '86型 · 个', unit: '个', initial: 0 },
+  { id: 'socket', category: 'electric', name: '五孔插座', spec: '86型 · 个', unit: '个', initial: 0 },
+  { id: 'heating-pipe', category: 'floor', name: '地热管', spec: 'PERT 20mm · 米', unit: '米', initial: 0 },
+  { id: 'manifold', category: 'floor', name: '分水器', spec: '地热 · 组', unit: '组', initial: 0 },
+  { id: 'insulation', category: 'floor', name: '保温板', spec: '地热 · 平方米', unit: '㎡', initial: 0 },
+  { id: 'clip', category: 'floor', name: '地热卡钉', spec: '地热 · 包', unit: '包', initial: 0 }
+]);
+const STORIES = Object.freeze({
+  home: { title: '过去记过的，都找得到。', copy: '按施工地点整理料单，地址、联系人和电话都能搜索。再接到电话时，不必从头翻找。', caption: '我的料单', image: 'assets/app-home.png', alt: '料记 App 料单列表，使用虚构工地与联系人展示' },
+  library: { title: '熟悉的材料，放在顺手的位置。', copy: '水料、电料、地热分开整理，常用材料按分类与分组查找。名称、规格和单位，下次不必重新录一遍。', caption: '常用材料库', image: 'assets/app-library.png', alt: '料记 App 常用材料库，展示水料分组与分类定位' },
+  quantity: { title: '点一下数字，就能记下用量。', copy: '加减连续录量，点数字直接输入小数。只记数量也可以，价格按需填写，编辑时自动保存。', caption: '编辑材料', image: 'assets/app-quantity.png', alt: '料记 App 录量界面，展示材料数量加减与直接输入控件' },
+  pdf: { title: '交出去的，是一张清楚的料单。', copy: '材料与用量分列，按分类整理成 A5 中文 PDF。在 App 内预览后，就能通过系统分享或外部打开。', caption: 'A5 用量版 PDF', image: 'assets/app-pdf.png', alt: '由料记 App 当前 PDF 导出代码生成的匿名施工材料清单示例' }
+});
+const MAX_MILLI = 999999999; // 999,999.999 per material, safe for integer steps.
+const state = { category: 'water', search: '', quantities: new Map(MATERIALS.map(item => [item.id, item.initial])), invalid: new Set() };
+const $ = selector => document.querySelector(selector);
+const formatQuantity = milli => String(milli / 1000);
+
+function parseQuantity(value) {
+  const text = value.trim();
+  if (!/^\d+(?:\.\d{1,3})?$/.test(text)) return null;
+  const [whole, decimal = ''] = text.split('.');
+  const result = Number(whole) * 1000 + Number(decimal.padEnd(3, '0'));
+  return Number.isSafeInteger(result) && result <= MAX_MILLI ? result : null;
+}
+
+function setMessage(message, isError = false) {
+  const messageElement = $('#input-message');
+  messageElement.textContent = message;
+  messageElement.classList.toggle('is-error', isError);
+}
+
+function renderMaterials() {
+  const list = $('#material-list');
+  const query = state.search.toLocaleLowerCase();
+  const shown = MATERIALS.filter(item => item.category === state.category && `${item.name} ${item.spec}`.toLocaleLowerCase().includes(query));
+  list.replaceChildren();
+  if (!shown.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-search';
+    const title = document.createElement('strong');
+    title.textContent = '这个分类里，暂时没找到。';
+    const hint = document.createElement('span');
+    hint.textContent = '换个关键词，或切换分类再找找。';
+    empty.append(title, hint);
+    list.append(empty);
+    return;
+  }
+  shown.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'material-row';
+    row.dataset.material = item.id;
+    // All interpolated strings below are local constants, never visitor input.
+    row.innerHTML = `<div class="material-info"><label for="quantity-${item.id}">${item.name}</label><small>${item.spec}</small></div><div class="stepper"><button type="button" data-step="-1" data-id="${item.id}" aria-label="减少${item.name}用量">−</button><input class="quantity-input" id="quantity-${item.id}" data-id="${item.id}" type="text" inputmode="decimal" autocomplete="off" maxlength="24" aria-label="${item.name}用量（${item.unit}）" aria-describedby="input-message" value="${formatQuantity(state.quantities.get(item.id))}"><button type="button" data-step="1" data-id="${item.id}" aria-label="增加${item.name}用量">＋</button></div>`;
+    list.append(row);
+    updateStepper(item.id);
+  });
+}
+
+function updateStepper(id) {
+  const row = $(`[data-material="${id}"]`);
+  if (!row) return;
+  const quantity = state.quantities.get(id);
+  row.querySelector('[data-step="-1"]').disabled = quantity === 0;
+  row.querySelector('[data-step="1"]').disabled = quantity === MAX_MILLI;
+}
+
+function renderPreview() {
+  const active = MATERIALS.filter(item => state.quantities.get(item.id) > 0);
+  $('#selection-count').textContent = `已选 ${active.length} 项材料`;
+  $('#paper-count').textContent = `共 ${active.length} 项材料`;
+  const content = $('#preview-content');
+  content.replaceChildren();
+  if (!active.length) {
+    const empty = document.createElement('p');
+    empty.className = 'paper-empty';
+    empty.textContent = '还没记用量。为一项材料加一点试试。';
+    content.append(empty);
+    return;
+  }
+  let number = 0;
+  Object.entries(CATEGORIES).forEach(([category, name]) => {
+    const items = active.filter(item => item.category === category);
+    if (!items.length) return;
+    const group = document.createElement('section');
+    group.className = 'receipt-group';
+    group.innerHTML = `<h3>${name}</h3><table class="receipt-table" aria-label="${name}示例用量"><thead><tr><th scope="col">序</th><th scope="col">材料名称</th><th scope="col">用量</th></tr></thead><tbody>${items.map(item => `<tr><td>${++number}</td><td>${item.name}</td><td>${formatQuantity(state.quantities.get(item.id))}<span class="receipt-unit">${item.unit}</span></td></tr>`).join('')}</tbody></table>`;
+    content.append(group);
+  });
+}
+
+function commitInput(input, normalize = false) {
+  const id = input.dataset.id;
+  const value = parseQuantity(input.value);
+  if (value === null) {
+    state.invalid.add(id);
+    input.setAttribute('aria-invalid', 'true');
+    setMessage('请输入 0–999999.999 的用量，最多三位小数；预览保留上次有效用量。', true);
+    return false;
+  }
+  state.invalid.delete(id);
+  input.removeAttribute('aria-invalid');
+  state.quantities.set(id, value);
+  if (normalize) input.value = formatQuantity(value);
+  setMessage(state.invalid.size ? '请修正标红的用量，预览保留上次有效数值。' : '', state.invalid.size > 0);
+  updateStepper(id);
+  renderPreview();
+  return true;
+}
+
+function switchCategory(category) {
+  state.category = category;
+  // Inputs disappearing under filtering/tab switches return to their last valid
+  // value; malformed drafts never alter the receipt or silently round a value.
+  state.invalid.clear();
+  setMessage('');
+  document.querySelectorAll('[data-category]').forEach(tab => {
+    const selected = tab.dataset.category === category;
+    tab.classList.toggle('active', selected);
+    tab.setAttribute('aria-selected', String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+  });
+  $('#material-panel').setAttribute('aria-labelledby', `tab-${category}`);
+  renderMaterials();
+}
+
+function switchStory(key) {
+  const story = STORIES[key];
+  document.querySelectorAll('[data-story]').forEach(tab => {
+    const selected = tab.dataset.story === key;
+    tab.classList.toggle('active', selected);
+    tab.setAttribute('aria-selected', String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+  });
+  $('#story-panel').setAttribute('aria-labelledby', `story-tab-${key}`);
+  $('#story-panel').classList.toggle('pdf-mode', key === 'pdf');
+  $('#story-title').textContent = story.title;
+  $('#story-copy').textContent = story.copy;
+  $('#stage-caption').textContent = story.caption;
+  $('#asset-caption').textContent = key === 'pdf' ? 'App 导出文件 · 匿名示例' : '真实 App 界面 · 演示资料';
+  const screenshot = $('#app-screenshot');
+  screenshot.src = story.image;
+  screenshot.alt = story.alt;
+  screenshot.width = key === 'pdf' ? 840 : 780;
+  screenshot.height = key === 'pdf' ? 1192 : 1688;
+}
+
+function addTabKeyboardNavigation(container, attribute, activate) {
+  container.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    const tabs = [...container.querySelectorAll('[role="tab"]')];
+    const current = tabs.indexOf(document.activeElement);
+    if (current < 0) return;
+    event.preventDefault();
+    let next;
+    if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = tabs.length - 1;
+    else next = (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    activate(tabs[next].dataset[attribute]);
+    tabs[next].focus();
+  });
+}
+
+document.querySelectorAll('[data-download]').forEach(link => { link.href = SITE_CONFIG.downloadUrl; });
+document.querySelectorAll('[data-category]').forEach(tab => tab.addEventListener('click', () => switchCategory(tab.dataset.category)));
+document.querySelectorAll('[data-story]').forEach(tab => tab.addEventListener('click', () => switchStory(tab.dataset.story)));
+addTabKeyboardNavigation($('.category-tabs'), 'category', switchCategory);
+addTabKeyboardNavigation($('.story-tabs'), 'story', switchStory);
+
+$('#material-search').addEventListener('input', event => {
+  state.search = event.target.value.trim();
+  state.invalid.clear();
+  setMessage('');
+  renderMaterials();
+});
+$('#material-list').addEventListener('input', event => {
+  if (event.target.matches('.quantity-input')) commitInput(event.target);
+});
+$('#material-list').addEventListener('focusout', event => {
+  if (event.target.matches('.quantity-input')) commitInput(event.target, true);
+});
+$('#material-list').addEventListener('keydown', event => {
+  if (!event.target.matches('.quantity-input')) return;
+  if (event.key === 'Enter') { event.preventDefault(); commitInput(event.target, true); }
+  if (event.key === 'Escape') {
+    event.target.value = formatQuantity(state.quantities.get(event.target.dataset.id));
+    commitInput(event.target, true);
+  }
+});
+$('#material-list').addEventListener('click', event => {
+  const button = event.target.closest('[data-step]');
+  if (!button) return;
+  const id = button.dataset.id;
+  const next = Math.max(0, Math.min(MAX_MILLI, state.quantities.get(id) + Number(button.dataset.step) * 1000));
+  state.quantities.set(id, next);
+  state.invalid.delete(id);
+  const input = $(`#quantity-${id}`);
+  input.value = formatQuantity(next);
+  input.removeAttribute('aria-invalid');
+  setMessage(state.invalid.size ? '请修正标红的用量，预览保留上次有效数值。' : '', state.invalid.size > 0);
+  updateStepper(id);
+  renderPreview();
+});
+$('#reset-demo').addEventListener('click', () => {
+  state.quantities = new Map(MATERIALS.map(item => [item.id, item.initial]));
+  state.search = '';
+  $('#material-search').value = '';
+  switchCategory('water');
+  renderPreview();
+  setMessage('已恢复最初的示例用量。');
+});
+renderMaterials();
+renderPreview();

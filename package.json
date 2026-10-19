@@ -1,0 +1,10 @@
+{
+  "name": "liaoji-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "料记 Android App 产品官网",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "check": "node --check app.js && node --check tools/serve.mjs"
+  }
+}

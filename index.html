@@ -1,95 +1,110 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="料记：为水电、地热施工师傅打造的客户与材料管理工具。" />
-  <title>料记 · 把每一笔料算清楚</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f7fa">
+  <meta name="description" content="料记，为水电与地热施工准备的随身用料本。分类记量、整理料单、导出清晰的 PDF，业务数据保存在本机。下载 Android 版，开始记清每一笔用料。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:title" content="料记 · 记清每一笔用料">
+  <meta property="og:description" content="水、电、地热，随手记量，清楚出单。试着改一笔用量，看看料记的工作方式。">
+  <meta property="og:url" content="https://frostnova233.github.io/liaoji-site/">
+  <meta property="og:image" content="https://frostnova233.github.io/liaoji-site/assets/app-icon.png">
+  <meta property="og:image:alt" content="料记 App 蓝色图标，白色料字与橙色铅笔尖">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://frostnova233.github.io/liaoji-site/">
+  <link rel="icon" type="image/png" href="assets/app-icon.png">
+  <link rel="apple-touch-icon" href="assets/app-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+  <title>料记 · 记清每一笔用料</title>
 </head>
 <body>
-  <div class="grain" aria-hidden="true"></div>
+  <a class="skip-link" href="#workspace">跳到互动体验</a>
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="料记首页"><span class="brand-mark">料</span><span>料记</span></a>
-    <span class="header-note">水电师傅的随身算料本</span>
-    <a class="header-link" href="#features">功能一览 <span aria-hidden="true">↓</span></a>
+    <nav class="nav-shell" aria-label="主导航">
+      <a class="brand" href="#top" aria-label="料记首页"><img src="assets/app-icon.png" alt="" width="36" height="36"><span>料记<span class="brand-roman">LiaoJi</span></span></a>
+      <div class="nav-links"><a href="#workspace">试着记一笔</a><a href="#app">看看 App</a><a href="#questions">常见问题</a></div>
+      <a class="button button-small download-link" data-download href="https://www.pgyer.com/liaoji-android" target="_blank" rel="noopener noreferrer">下载 Android 版 <span aria-hidden="true">↗</span></a>
+    </nav>
   </header>
 
   <main id="top">
-    <section class="hero section-shell">
-      <div class="hero-copy">
-        <p class="eyebrow"><span></span> 为一线施工准备</p>
-        <h1>把每一笔料<br />算得<span>明明白白</span></h1>
-        <p class="hero-lead">料记，专为水电、地热施工师傅打造。客户、材料、合计和料单，都在一部手机里理顺。</p>
-        <div class="hero-points" aria-label="核心优势">
-          <div><b>01</b><span>记客户<br />不漏信息</span></div>
-          <div><b>02</b><span>算材料<br />随改随算</span></div>
-          <div><b>03</b><span>出料单<br />一键清晰</span></div>
-        </div>
-        <a class="primary-cta" href="#demo">看看怎么用 <span aria-hidden="true">↓</span></a>
+    <section class="hero shell" aria-labelledby="hero-title">
+      <div class="hero-intro">
+        <div><p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> 给水电与地热施工的一本料记</p><h1 id="hero-title">记清每一笔<span class="title-last">用料<span class="pencil-dot" aria-hidden="true">。</span></span></h1></div>
+        <div class="hero-aside"><p>手上忙着干活，<br>用料的事，记得简单一点。</p><span class="hero-description">从现场记量，到整理一张清楚的料单。<br>水料、电料、地热，都有条理。</span><a href="#workspace" class="text-link">先在这里，试着改一笔 <span aria-hidden="true">↓</span></a></div>
       </div>
-      <div class="hero-device-wrap">
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="sticker sticker-water">水<span>料</span></div>
-        <div class="sticker sticker-electric">电<span>料</span></div>
-        <div class="sticker sticker-floor">地<span>热</span></div>
-        <div class="phone phone-hero" aria-label="料记客户一览界面示例">
-          <div class="phone-top"><span>9:41</span><span>● ● ●</span></div>
-          <div class="app-head"><div><small>上午好，师傅</small><strong>我的料单</strong></div><button class="avatar" aria-label="个人资料">王</button></div>
-          <div class="search-static">⌕ <span>搜小区、姓名或电话</span></div>
-          <div class="mini-order"><span>最新更新</span><span>↕</span></div>
-          <div class="hero-record selected"><div class="record-top"><strong>悦湖雅苑 · 3-2-1802</strong><span class="chips"><i class="water">水</i><i class="electric">电</i><i class="floor">热</i></span></div><p>张师傅　138 8624 1908 <time>· 今天 10:26</time></p></div>
-          <div class="hero-record"><div class="record-top"><strong>锦绣新城 · 8-1-502</strong><span class="chips"><i class="electric">电</i></span></div><p>李女士　186 3201 8876 <time>· 昨天 18:40</time></p></div>
-          <button class="floating-plus" aria-label="新建料单">＋</button>
-          <div class="phone-tab"><span class="active">▣<b>料单</b></span><span>◉<b>材料</b></span><span>⚙<b>设置</b></span></div>
+
+      <div class="workspace" id="workspace">
+        <div class="workspace-heading"><div><span class="workspace-dot" aria-hidden="true"></span><span>料记体验台</span><span class="demo-label">网页示例</span></div><button class="reset-button" id="reset-demo" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></svg>重置示例</button></div>
+        <div class="workspace-body">
+          <section class="editor" aria-labelledby="editor-title">
+            <div class="editor-heading"><div><p class="micro-label">现场 · 记用量</p><h2 id="editor-title">今天，要用多少？</h2></div><span class="edit-hint" aria-hidden="true">点数字也能改 <svg viewBox="0 0 64 25"><path d="M2 7c20-12 45-3 51 13m-11-6 12 7 5-12"/></svg></span></div>
+            <div class="category-tabs" role="tablist" aria-label="材料分类">
+              <button type="button" id="tab-water" class="category-tab active" role="tab" aria-selected="true" aria-controls="material-panel" tabindex="0" data-category="water"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12Z"/><path d="M8 15a4 4 0 0 0 4 4"/></svg>水料</button>
+              <button type="button" id="tab-electric" class="category-tab" role="tab" aria-selected="false" aria-controls="material-panel" tabindex="-1" data-category="electric"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m13 2-8 12h6l-1 8 9-13h-7l1-7Z"/></svg>电料</button>
+              <button type="button" id="tab-floor" class="category-tab" role="tab" aria-selected="false" aria-controls="material-panel" tabindex="-1" data-category="floor"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 20h16M6 15c-4-4 4-5 0-10m6 10c-4-4 4-5 0-10m6 10c-4-4 4-5 0-10"/></svg>地热</button>
+            </div>
+            <label class="search-box"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="material-search" type="search" placeholder="找一找材料名称或规格" aria-label="搜索当前分类的材料名称或规格" autocomplete="off"></label>
+            <div id="material-panel" role="tabpanel" aria-labelledby="tab-water"><div class="material-list" id="material-list"></div></div>
+            <div class="editor-footer"><span><span class="live-dot" aria-hidden="true"></span> <span id="selection-count">已选 4 项材料</span></span><span>支持三位小数</span></div>
+            <p id="input-message" class="input-message" role="status" aria-live="polite"></p>
+          </section>
+
+          <section class="preview" aria-labelledby="preview-title">
+            <div class="preview-heading"><span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6V3Z"/><path d="M14 3v5h5M9 12h7m-7 4h7"/></svg> 随用量，一起变化</span><span class="paper-format">A5 料单预览</span></div>
+            <div class="paper" id="paper">
+              <div class="paper-brand"><span>料记</span><span>LIAOJI / MATERIAL NOTE</span></div>
+              <h2 id="preview-title">施工材料清单</h2>
+              <div class="paper-meta"><span>施工地点</span><b>示例工地 · 现场用料</b><span>料单备注</span><b>请核对材料规格及用量</b></div>
+              <div id="preview-content"></div>
+              <div class="paper-bottom"><span id="paper-count">共 4 项材料</span><span>网页示例 · 非实际订单</span></div>
+            </div>
+            <p class="preview-note">用量列清楚，交代起来也清楚。<span>App 内支持 PDF 预览、分享与打开。</span></p>
+          </section>
         </div>
+        <div class="workspace-caption"><span>试着按一下 <b>＋</b>，或输入 <b>2.5</b></span><span>体验数据仅在当前页面中，刷新即可还原。</span></div>
+        <noscript><p class="noscript-note">开启 JavaScript 后即可体验录量；也可直接下载 Android App。</p></noscript>
       </div>
+      <div class="quiet-facts"><span>水料 / 电料 / 地热</span><span>只记用量，也可以</span><span>业务数据，留在本机</span></div>
     </section>
 
-    <section id="demo" class="demo-section">
-      <div class="section-intro section-shell">
-        <p class="eyebrow"><span></span> 跟着做一遍</p>
-        <div><h2>从接到电话到出料单，<br />几步就完成。</h2><p>点一点手机里的操作，体验料记怎样陪你把活儿理顺。</p></div>
-      </div>
-      <div class="demo-layout section-shell">
-        <aside class="flow-nav" aria-label="功能演示步骤">
-          <button class="flow-step active" data-screen="list"><b>01</b><span><strong>料单一览</strong><small>客户与进度一眼清楚</small></span></button>
-          <button class="flow-step" data-screen="category"><b>02</b><span><strong>选择要算的料</strong><small>水料、电料、地热</small></span></button>
-          <button class="flow-step" data-screen="materials"><b>03</b><span><strong>添加材料</strong><small>数量、单价自动合计</small></span></button>
-          <button class="flow-step" data-screen="customer"><b>04</b><span><strong>补全客户资料</strong><small>地址、联系人、备注</small></span></button>
-          <button class="flow-step" data-screen="complete"><b>05</b><span><strong>查看与导出</strong><small>明细、合计、PDF料单</small></span></button>
-        </aside>
-        <div class="demo-device-col">
-          <div class="phone demo-phone">
-            <div class="phone-top"><span>9:41</span><span>● ● ●</span></div>
-            <div id="app-screen" aria-live="polite"></div>
+    <section class="app-section shell" id="app" aria-labelledby="app-title">
+      <div class="section-heading"><div><p class="eyebrow">从这里试一笔，到工地上用得顺手</p><h2 id="app-title">把熟悉的活儿，<br>理得更顺一点。</h2></div><p>给材料留一个位置，给每个工地留一张料单。<br>真正打开 App，常用的操作都在手边。</p></div>
+      <div class="app-showcase">
+        <div class="app-story">
+          <div class="story-tabs" role="tablist" aria-label="App 功能展示">
+            <button id="story-tab-home" type="button" class="story-tab active" role="tab" aria-selected="true" aria-controls="story-panel" tabindex="0" data-story="home"><span>料单</span><small>一个工地，一眼找到</small><span aria-hidden="true">↗</span></button>
+            <button id="story-tab-library" type="button" class="story-tab" role="tab" aria-selected="false" aria-controls="story-panel" tabindex="-1" data-story="library"><span>材料库</span><small>常用材料，不用重录</small><span aria-hidden="true">↗</span></button>
+            <button id="story-tab-quantity" type="button" class="story-tab" role="tab" aria-selected="false" aria-controls="story-panel" tabindex="-1" data-story="quantity"><span>录用量</span><small>直接改数，随手记下</small><span aria-hidden="true">↗</span></button>
+            <button id="story-tab-pdf" type="button" class="story-tab" role="tab" aria-selected="false" aria-controls="story-panel" tabindex="-1" data-story="pdf"><span>出料单</span><small>一份清楚的 PDF</small><span aria-hidden="true">↗</span></button>
           </div>
-          <p class="tap-tip">点击界面中的按钮继续演示 <span>↗</span></p>
+          <div class="story-description" aria-live="polite"><h3 id="story-title">过去记过的，都找得到。</h3><p id="story-copy">按施工地点整理料单，地址、联系人和电话都能搜索。再接到电话时，不必从头翻找。</p></div>
+          <div class="story-footnote"><span class="tiny-cross" aria-hidden="true">＋</span><span>保留你做事的习惯，<br>省下反复整理的时间。</span></div>
         </div>
-        <div class="demo-copy" id="demo-copy">
-          <p class="step-count">STEP 01 / 05</p><h3>接过电话，<br />先记下这位客户。</h3><p>小区、房间号、联系人和电话，和这张料单放在一起。过去的活儿也能随时搜索出来。</p>
-          <div class="note-card"><span>⌕</span><div><strong>按关键词搜索</strong><small>小区 / 姓名 / 联系电话都能查</small></div></div>
-        </div>
+        <figure class="app-stage" id="story-panel" role="tabpanel" aria-labelledby="story-tab-home">
+          <div class="stage-grid" aria-hidden="true"></div><span class="stage-caption" id="stage-caption">我的料单</span>
+          <div class="screenshot-frame" id="screenshot-frame"><img id="app-screenshot" src="assets/app-home.png" width="780" height="1688" alt="料记 App 料单列表，使用虚构工地与联系人展示" loading="lazy"></div>
+          <figcaption><span class="live-dot" aria-hidden="true"></span> <span id="asset-caption">真实 App 界面 · 演示资料</span></figcaption>
+        </figure>
       </div>
+      <div class="local-note"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg><div><h3>记在手机里，心里更有底。</h3><p>业务数据保存在本机。App 支持导出与恢复备份，换机前记得为资料留一份副本。</p></div><span class="local-note-label">本地优先</span></div>
     </section>
 
-    <section id="features" class="features section-shell">
-      <div class="feature-heading"><p class="eyebrow"><span></span> 一目了然的功能</p><h2>该记的、该算的、<br />该交代的，都有地方放。</h2></div>
-      <div class="feature-grid">
-        <article class="feature-card feature-large"><div class="feature-icon blue">▣</div><p class="feature-num">01 / 客户与料单</p><h3>每个活儿，都找得到。</h3><p>客户可保留多张料单。地址精确到房间，创建和最终更新时间清楚可查。</p><div class="feature-tags"><span>小区地址</span><span>联系人</span><span>联系电话</span><span>历史料单</span></div></article>
-        <article class="feature-card dark"><div class="feature-icon orange">±</div><p class="feature-num">02 / 材料计算</p><h3>水、电、地热，<br />分开算更安心。</h3><p>材料可随时增减、修改种类、单位和单价；数量与小计自动跟着变。</p><div class="category-row"><i class="water">水料</i><i class="electric">电料</i><i class="floor">地热</i></div></article>
-        <article class="feature-card"><div class="feature-icon green">⌖</div><p class="feature-num">03 / 客户信息</p><h3>该留的话，一句不漏。</h3><p>位置、联系人、电话、备注集中保存。点电话可唤起手机拨号并自动带入号码。</p></article>
-        <article class="feature-card"><div class="feature-icon orange">⌗</div><p class="feature-num">04 / 效率工具</p><h3>手边常用的，随手能到。</h3><p>按时间或信息排序；需要手算时，一键跳到系统计算器。</p></article>
-        <article class="feature-card export-card"><div class="export-art"><span>PDF</span><b>↓</b></div><div><p class="feature-num">05 / 导出交付</p><h3>一张清楚的料单，直接发人。</h3><p>导出含客户抬头、分类明细、数量、单价、小计和总计的 PDF。</p></div></article>
-      </div>
+    <section class="download-section" id="download" aria-labelledby="download-title">
+      <div class="download-shell shell"><div class="download-copy"><img class="download-icon" src="assets/app-icon.png" alt="" width="64" height="64" loading="lazy"><p class="eyebrow">工具顺手，干活更专心</p><h2 id="download-title">下一笔用料，<br>就用料记。</h2><p>从一张料单开始，把现场的事记清楚。</p><a class="button download-link" data-download href="https://www.pgyer.com/liaoji-android" target="_blank" rel="noopener noreferrer">下载 Android 版 <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"/></svg></a><span class="download-detail">通过蒲公英下载安装 · 首次领取可试用 30 天</span></div><img class="brand-art" src="assets/launch-line-art.png" width="853" height="464" loading="lazy" alt="水电施工工具线稿：管件、电线、阀门与工具"></div>
     </section>
 
-    <section class="closing section-shell"><p class="eyebrow"><span></span> 料记的工作方式</p><h2>少翻几页本子，<br />多留一点心思在活儿上。</h2><div class="closing-line"><span>接活</span><i></i><span>算料</span><i></i><span>确认</span><i></i><span>出单</span></div></section>
+    <section class="faq shell" id="questions" aria-labelledby="faq-title"><div><p class="eyebrow">开始之前</p><h2 id="faq-title">你可能还想知道</h2></div><div class="faq-list">
+      <details><summary>支持哪些设备？<span aria-hidden="true">＋</span></summary><p>目前提供 Android 版，点击下载按钮即可前往蒲公英安装页面。网页体验台只用于了解录量方式，完整功能请在 App 中使用。</p></details>
+      <details><summary>可以先试用吗？<span aria-hidden="true">＋</span></summary><p>可以。首次主动联网领取后，可连续试用 30 天；安装或打开 App 不会自动开始计时。首次领取和激活需要联网，具体授权状态及提示以 App 内显示为准。</p></details>
+      <details><summary>记料一定要填价格吗？<span aria-hidden="true">＋</span></summary><p>不需要。现场可以只记材料和用量，单价按需填写。PDF 默认以材料与用量为主，让接收的人容易核对。</p></details>
+      <details><summary>数据存在哪里？不联网能用吗？<span aria-hidden="true">＋</span></summary><p>料单、客户和材料等业务数据存放在手机本机，不上传授权服务。首次领取或激活需要联网，之后仍需按 App 提示进行授权校验；有效离线许可期间可以正常使用。建议定期导出备份，并把副本放在安全的位置。</p></details>
+      <details><summary>怎么把料单交给别人？<span aria-hidden="true">＋</span></summary><p>在 App 内预览 PDF 后，可通过系统分享或外部打开交付料单。网页中的联动预览是交互示例，实际 PDF 以 App 生成的文件为准。</p></details>
+    </div></section>
   </main>
-  <footer><a class="brand" href="#top"><span class="brand-mark">料</span><span>料记</span></a><span>把每一笔料，记得明明白白。</span><span>© 2026 料记</span></footer>
-  <script src="app.js"></script>
+  <footer class="site-footer shell"><a class="brand" href="#top"><img src="assets/app-icon.png" width="28" height="28" alt=""><span>料记</span></a><span>记清每一笔用料。</span><span class="copyright">© 2026 LiaoJi</span><a href="#top" class="back-top" aria-label="返回顶部">↑</a></footer>
 </body>
 </html>
