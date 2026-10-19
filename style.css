@@ -231,8 +231,8 @@ h1 { font-size: clamp(42px, 4.7vw, 66px); letter-spacing: -.055em; line-height: 
   .button-small { font-size: 11px; padding-inline: 13px; gap: 10px; }
   .hero { padding-top: 35px; }
   .hero-intro { grid-template-columns: 1fr; gap: 20px; margin-bottom: 28px; }
-  h1 { font-size: 46px; line-height: 1.18; }
-  .title-last { display: inline; }
+  h1 { font-size: 40px; line-height: 1.18; }
+  .title-last { display: inline-block; }
   .hero-intro .eyebrow { font-size: 10px; margin-bottom: 17px; }
   .hero-aside { padding: 0; border: 0; }
   .hero-aside > p { font-size: 16px; margin: 0 0 10px; }
