@@ -161,6 +161,11 @@ h1 { font-size: clamp(42px, 4.7vw, 66px); letter-spacing: -.055em; line-height: 
 .stage-grid { position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(#d5dfec75 1px, transparent 1px), linear-gradient(90deg, #d5dfec75 1px, transparent 1px); background-size: 34px 34px; mask-image: linear-gradient(130deg, #0008, transparent 80%); }
 .stage-caption { position: absolute; top: 22px; right: 22px; font-size: 10px; writing-mode: vertical-rl; letter-spacing: .2em; color: #788ba6; }
 .screenshot-frame { width: 243px; background: #f6f7fa; border: 5px solid #fff; border-radius: 27px; box-shadow: 0 15px 40px #425d8424, 0 0 0 1px #d8e2ef; overflow: hidden; }
+.device-statusbar { display: flex; align-items: center; justify-content: space-between; min-height: 23px; padding: 8px 14px 5px; background: #e2effc; color: var(--ink); font-size: 8px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.device-status-icons { display: inline-flex; align-items: center; gap: 4px; }
+.device-status-icons svg { width: 10px; height: 8px; stroke-width: 1.4; }
+.device-status-icons .device-battery { width: 14px; }
+.app-stage.pdf-mode .device-statusbar { display: none; }
 .screenshot-frame img { width: 100%; aspect-ratio: 390 / 844; object-fit: cover; }
 .app-stage figcaption { font-size: 10px; color: #6f8097; display: flex; align-items: center; gap: 7px; margin-top: 23px; }
 .app-stage.pdf-mode { justify-content: center; }

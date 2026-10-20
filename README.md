@@ -31,7 +31,7 @@ node --check tools/serve.mjs
 
 ## 素材来源与隐私
 
-App 图标与施工线稿直接来自 `liaoji/assets/branding/`，保留原稿。三个 App 页面来自 Flutter 视觉测试产物，只有虚构工地/联系人，没有公开电话号码；非生产客户数据。
+App 图标与施工线稿直接来自 `liaoji/assets/branding/`，保留原稿。三个 App 页面来自 Flutter 视觉测试产物，只有虚构工地/联系人，没有公开电话号码；非生产客户数据。首页使用四张匿名示例料单，避免空列表使展示画面下方留白过多。手机展示顶部的时间、信号与电量为网页示意状态栏，PDF 展示时隐藏。
 
 `assets/app-example.pdf` 使用 App 当前 `PdfService` 导出，输入为匿名工地与演示材料，显式清空联系人电话和施工联系人。`assets/app-pdf.png` 为其渲染图。网页同步预览是 HTML 示例，不代替实际 App 导出文件。
 
