@@ -1,7 +1,10 @@
 'use strict';
 
-// The only download destination; every data-download link uses this value.
-const SITE_CONFIG = Object.freeze({ downloadUrl: 'https://www.pgyer.com/liaoji-android' });
+// Download channels: direct APK first, PGYER as an explicit fallback.
+const SITE_CONFIG = Object.freeze({
+  downloadUrl: 'https://github.com/FrostNova233/liaoji-releases/releases/latest/download/liaoji.apk',
+  backupDownloadUrl: 'https://www.pgyer.com/liaoji-android'
+});
 const CATEGORIES = Object.freeze({ water: '水料', electric: '电料', floor: '地热' });
 // A small, anonymous example based on the App's material vocabulary. Quantities
 // use integer thousandths, matching the App's precision without float drift.
@@ -176,6 +179,7 @@ function addTabKeyboardNavigation(container, attribute, activate) {
 }
 
 document.querySelectorAll('[data-download]').forEach(link => { link.href = SITE_CONFIG.downloadUrl; });
+document.querySelectorAll('[data-download-backup]').forEach(link => { link.href = SITE_CONFIG.backupDownloadUrl; });
 document.querySelectorAll('[data-category]').forEach(tab => tab.addEventListener('click', () => switchCategory(tab.dataset.category)));
 document.querySelectorAll('[data-story]').forEach(tab => tab.addEventListener('click', () => switchStory(tab.dataset.story)));
 addTabKeyboardNavigation($('.category-tabs'), 'category', switchCategory);

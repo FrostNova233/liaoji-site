@@ -3,7 +3,8 @@
 料记 Android App 的静态产品官网。浅蓝与白色工作台，支持示例材料录量、同步料单预览和真实 App 界面切换。
 
 - 官网：https://frostnova233.github.io/liaoji-site/
-- Android 下载：https://www.pgyer.com/liaoji-android
+- Android 直链下载：https://github.com/FrostNova233/liaoji-releases/releases/latest/download/liaoji.apk
+- 备用下载（蒲公英）：https://www.pgyer.com/liaoji-android
 - 仓库：https://github.com/FrostNova233/liaoji-site
 
 ## 本地预览
@@ -25,7 +26,7 @@ node --check tools/serve.mjs
 
 - `index.html`：页面结构、SEO、FAQ 及无 JavaScript 时可用的下载入口。
 - `style.css`：响应式布局、轻透导航、高对比度与减少动画支持。
-- `app.js`：`SITE_CONFIG.downloadUrl` 统一控制启用 JavaScript 时的全部下载按钮；更换渠道时同时更新 HTML 回退链接及本 README。
+- `app.js`：`SITE_CONFIG.downloadUrl` 统一控制主按钮的 GitHub Release APK 直链，`backupDownloadUrl` 控制蒲公英备用入口；主按钮不打开中间页面。更换渠道时同时更新 HTML 回退链接及本 README。
 - 示例用量按整数千分位保存，最多三位小数，范围 0–999999.999。无效输入保留上次有效预览，Escape 恢复有效值；切换分类/搜索时放弃无效输入草稿。所有示例数据只在内存中，刷新和重置可恢复。
 - 搜索作用于当前分类的名称及规格；分类切换保留搜索词。预览汇总所有分类已选材料，只统计项数，不合计不同单位。
 

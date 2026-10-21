@@ -186,6 +186,8 @@ h1 { font-size: clamp(42px, 4.7vw, 66px); letter-spacing: -.055em; line-height: 
 .download-copy .button { gap: 35px; }
 .download-copy .button svg { width: 18px; height: 18px; }
 .download-detail { display: block; color: #657791; font-size: 10px; margin-top: 13px; }
+.backup-download { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 3px; color: var(--blue-text); font-size: 12px; border-radius: 5px; }
+.backup-download:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
 .brand-art { width: 640px; max-width: 135%; justify-self: end; mix-blend-mode: multiply; opacity: .82; }
 .faq { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; padding-block: 95px 100px; }
 .faq h2 { font-size: 26px; font-weight: 550; letter-spacing: -.03em; margin: 0; }
