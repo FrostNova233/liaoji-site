@@ -23,7 +23,7 @@ const MATERIALS = Object.freeze([
   { id: 'clip', category: 'floor', name: '地热卡钉', spec: '地热 · 包', unit: '包', initial: 0 }
 ]);
 const STORIES = Object.freeze({
-  home: { title: '过去记过的，都找得到。', copy: '按施工地点整理料单，地址、联系人和电话都能搜索。再接到电话时，不必从头翻找。', caption: '我的料单', image: 'assets/app-home.png', alt: '料记 App 料单列表，使用虚构工地与联系人展示' },
+  home: { title: '过去记过的，都找得到。', copy: '按施工地点整理料单，地址、联系人和电话都能搜索。再接到电话时，不必从头翻找。', caption: '我的料单', image: 'assets/app-home.png', alt: '料记 App 料单列表，使用虚构住宅与联系人展示' },
   library: { title: '熟悉的材料，放在顺手的位置。', copy: '水料、电料、地热分开整理，常用材料按分类与分组查找。名称、规格和单位，下次不必重新录一遍。', caption: '常用材料库', image: 'assets/app-library.png', alt: '料记 App 常用材料库，展示水料分组与分类定位' },
   quantity: { title: '点一下数字，就能记下用量。', copy: '加减连续录量，点数字直接输入小数。只记数量也可以，价格按需填写，编辑时自动保存。', caption: '编辑材料', image: 'assets/app-quantity.png', alt: '料记 App 录量界面，展示材料数量加减与直接输入控件' },
   pdf: { title: '交出去的，是一张清楚的料单。', copy: '材料与用量分列，按分类整理成 A5 中文 PDF。在 App 内预览后，就能通过系统分享或外部打开。', caption: 'A5 用量版 PDF', image: 'assets/app-pdf.png', alt: '由料记 App 当前 PDF 导出代码生成的匿名施工材料清单示例' }
@@ -101,7 +101,7 @@ function renderPreview() {
     if (!items.length) return;
     const group = document.createElement('section');
     group.className = 'receipt-group';
-    group.innerHTML = `<h3>${name}</h3><table class="receipt-table" aria-label="${name}示例用量"><thead><tr><th scope="col">序</th><th scope="col">材料名称</th><th scope="col">用量</th></tr></thead><tbody>${items.map(item => `<tr><td>${++number}</td><td>${item.name}</td><td>${formatQuantity(state.quantities.get(item.id))}<span class="receipt-unit">${item.unit}</span></td></tr>`).join('')}</tbody></table>`;
+    group.innerHTML = `<h3>${name}</h3><table class="receipt-table" aria-label="${name}示例用量"><thead><tr><th scope="col">序号</th><th scope="col">材料及规格</th><th scope="col">用量</th></tr></thead><tbody>${items.map(item => `<tr><td>${++number}</td><td>${item.name}</td><td>${formatQuantity(state.quantities.get(item.id))}<span class="receipt-unit">${item.unit}</span></td></tr>`).join('')}</tbody></table>`;
     content.append(group);
   });
 }
@@ -154,12 +154,12 @@ function switchStory(key) {
   $('#story-title').textContent = story.title;
   $('#story-copy').textContent = story.copy;
   $('#stage-caption').textContent = story.caption;
-  $('#asset-caption').textContent = key === 'pdf' ? 'App 导出文件 · 匿名示例' : '真实 App 界面 · 演示资料';
+  $('#asset-caption').textContent = key === 'pdf' ? 'App 导出文件 · 网页阅读示意' : '真实 App 界面 · 演示资料';
   const screenshot = $('#app-screenshot');
   screenshot.src = story.image;
   screenshot.alt = story.alt;
   screenshot.width = key === 'pdf' ? 840 : 780;
-  screenshot.height = key === 'pdf' ? 1192 : 1688;
+  screenshot.height = key === 'pdf' ? 1192 : 1520;
 }
 
 function addTabKeyboardNavigation(container, attribute, activate) {
@@ -229,3 +229,66 @@ $('#reset-demo').addEventListener('click', () => {
 });
 renderMaterials();
 renderPreview();
+
+const copyMessage = $('#copy-message');
+let copyFeedbackTimer;
+let copyFeedbackClearTimer;
+let copyRequest = 0;
+document.querySelectorAll('[data-copy]').forEach(contact => {
+  contact.hidden = false;
+  contact.addEventListener('click', async event => {
+    event.preventDefault();
+    const request = ++copyRequest;
+    clearTimeout(copyFeedbackTimer);
+    clearTimeout(copyFeedbackClearTimer);
+    copyMessage.classList.remove('is-visible');
+    copyMessage.textContent = '';
+    const value = contact.dataset.copy;
+    const label = contact.dataset.copyLabel;
+    let message = '已复制';
+    let duration = 1200;
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      message = `请手动复制${label}：${value}`;
+      duration = 4000;
+    }
+    if (request !== copyRequest) return;
+    const text = contact.querySelector('.contact-value').getBoundingClientRect();
+    const container = $('#contact').getBoundingClientRect();
+    const feedbackCenter = message === '已复制' ? text.left - container.left + text.width / 2 : container.width / 2;
+    copyMessage.style.setProperty('--copy-feedback-x', `${feedbackCenter}px`);
+    copyMessage.style.setProperty('--copy-feedback-y', `${text.top - container.top - 6}px`);
+    copyMessage.textContent = message;
+    copyMessage.classList.add('is-visible');
+    copyFeedbackTimer = setTimeout(() => {
+      copyMessage.classList.remove('is-visible');
+      copyFeedbackClearTimer = setTimeout(() => { copyMessage.textContent = ''; }, 180);
+    }, duration);
+  });
+});
+
+const backTop = $('.back-top');
+let scrollAnchor = Math.max(0, window.scrollY);
+let scrollFramePending = false;
+function updateBackTop() {
+  const current = Math.max(0, Math.min(window.scrollY, document.documentElement.scrollHeight - window.innerHeight));
+  const delta = current - scrollAnchor;
+  if (current < 100) {
+    backTop.classList.remove('is-visible');
+    scrollAnchor = current;
+  } else if (Math.abs(delta) >= 6) {
+    backTop.classList.toggle('is-visible', delta < 0);
+    scrollAnchor = current;
+  }
+  scrollFramePending = false;
+}
+window.addEventListener('scroll', () => {
+  if (scrollFramePending) return;
+  scrollFramePending = true;
+  requestAnimationFrame(updateBackTop);
+}, { passive: true });
+window.addEventListener('pageshow', () => {
+  scrollAnchor = Math.max(0, window.scrollY);
+  backTop.classList.remove('is-visible');
+});
